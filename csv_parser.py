@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy
 import time
+
 #This program extracts out the name and set code for each card and matches that code with a set name
 #and exports a csv with the card name, set code, and set name for scraping later
 cards_col = ["name","code","uuid"]
@@ -12,7 +13,7 @@ sets = pd.read_csv("C:/Users/thoma/Downloads/AllPrintingsCSVFiles/sets.csv", use
 sets.columns = sets_col
 combine = pd.merge(cards, sets,on ="code")
 
-#This portion is optinal as this just reduces the load
+#This portion is optional as this just reduces the load
 combine = combine.drop_duplicates(subset = ['name'])
 
 print(combine)
