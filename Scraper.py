@@ -36,7 +36,7 @@ progress = tqdm(desc=f"Counting Cards", total=21744)
 
 def url_maker(set_name, card_name):
     set_name = set_name.replace(" ","+").replace("'",'').replace(':','').replace('.','')
-    card_name = card_url.replace(' // ','+').replace(', ', '+').replace(" ","+").replace("'",'')
+    card_name = card_name.replace(' // ','+').replace(', ', '+').replace(" ","+").replace("'",'')
     return set_name + '/' + card_name
 
 
