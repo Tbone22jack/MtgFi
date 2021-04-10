@@ -60,4 +60,4 @@ filtered_cards = pd.DataFrame({'name':card_names,
                                'releaseDates':releaseDates})
 
 print(filtered_cards.head(5))
-filtered_cards.to_csv(os.path.join(dir_path,"cards.csv"))
+filtered_cards.to_csv(os.path.join(dir_path,"filtered_cards.csv"))

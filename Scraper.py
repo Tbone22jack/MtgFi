@@ -34,32 +34,37 @@ requests.get(strUrl)
 # make a progress bar
 progress = tqdm(desc=f"Counting Cards", total=21744)
 
+def url_maker(set_name, card_name):
+    set_name = set_name.replace(" ","+").replace("'",'').replace(':','').replace('.','')
+    card_name = card_url.replace(' // ','+').replace(', ', '+').replace(" ","+").replace("'",'')
+    return set_name + '/' + card_name
+
 
 for index, row in tqdm(cards.iterrows()):
     #check if info is already downloaded
-    card_name = row.loc['setName'].replace(" ","+") + '/' + row.loc['name'].replace(' // ','+').replace(', ', '+').replace(" ","+").replace("'",'')
-    card_info_filepath = os.path.join(dir_path, "Card_Text", card_name.replace('/','_') + '.txt')
-    price_info_filepath = os.path.join(dir_path, "Price_Info", card_name.replace('/','_') + '.txt')
+    card_url = url_maker(row.loc['setName'], row.loc['name'])
+    card_info_filepath = os.path.join(dir_path, "Card_Text", card_url.replace('/','_') + '.txt')
+    price_info_filepath = os.path.join(dir_path, "Price_Info", card_url.replace('/','_') + '.txt')
     if os.path.exists(card_info_filepath) and os.path.exists(price_info_filepath):
         progress.update(1)
         continue
 
 
-    print(card_name)
+    print(card_url)
 
 
     # wait for a random amount of time
-    sleep_time  = randint(10,20)
+    sleep_time  = randint(5,10)
     sleep(sleep_time)
 
     
     # get html from website
-    strUrl = 'https://www.mtggoldfish.com/price/' + card_name + '#paper'
+    strUrl = 'https://www.mtggoldfish.com/price/' + card_url + '#paper'
     webpage = requests.get(strUrl)
     if webpage.status_code == 404:
         with open(os.path.join(dir_path, 'failed.txt'),'a') as file_handler:
             now = datetime.datetime.now()
-            file_handler.write(now.strftime('%m/%d/%Y, %H:%M:%S') + '  |  ' + card_name + '\n')
+            file_handler.write(now.strftime('%m/%d/%Y, %H:%M:%S') + '  |  ' + card_url + '\n')
             progress.update(1)
             continue
     html = webpage.content
