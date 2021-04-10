@@ -29,6 +29,8 @@ combine = combine.loc[~boolean_land]
 card_names = combine['name'].drop_duplicates().tolist()
 
 # Drop duplicates of cards with the same name but keep the earliest release date
+# In order to do this, I put the data in lists, then converted the list into a dataframe
+# Apparently, this is a tiny bit faster than keeping everything in pandas
 releaseDates = []
 setNames = []
 
