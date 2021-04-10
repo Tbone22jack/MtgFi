@@ -38,3 +38,9 @@ Card_Text/*
 Price_Info/*
 !Price_Info/blank.txt
 !Card_Text/blank.txt
+test*
+MTGJSON/*
+!MTGJSON/README
+!MTGJSON/AllPrintingsCSVFiles/blank.txt
+MTGJSON/AllPrintingsCSVFiles/cards.csv
+MTGJSON/AllPrintingsCSVFiles/foreign_data.csv

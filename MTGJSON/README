@@ -1,0 +1,17 @@
+All files in this folder are taken from MTGJSON (https://mtgjson.com/)
+
+
+File tree:
+
+    AllPrintingsCSVFiles:
+        blank.txt
+        cards.csv
+        foreign_data.csv
+        legalities.csv
+        meta.csv
+        rulings.csv
+        set_translations.csv
+        sets.csv
+        tokens.csv
+    AllPrices.json
+    README
