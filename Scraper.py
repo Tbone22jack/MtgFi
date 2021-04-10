@@ -23,7 +23,7 @@ def file_generator(filename):
 
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
-cards = pd.read_csv(os.path.join(dir_path, "cards.csv"))
+cards = pd.read_csv(os.path.join(dir_path, "filtered_cards.csv"))
 
 
 # open robots.txt
@@ -41,7 +41,6 @@ def url_maker(set_name, card_name):
 
 
 for index, row in tqdm(cards.iterrows()):
-    #check if info is already downloaded
     card_url = url_maker(row.loc['setName'], row.loc['name'])
     card_info_filepath = os.path.join(dir_path, "Card_Text", card_url.replace('/','_') + '.txt')
     price_info_filepath = os.path.join(dir_path, "Price_Info", card_url.replace('/','_') + '.txt')
@@ -91,5 +90,6 @@ for index, row in tqdm(cards.iterrows()):
     
     progress.update(1)
 
-    
+
+
 
