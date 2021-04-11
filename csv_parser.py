@@ -19,7 +19,7 @@ sets.columns = ["setCode","setName","releaseDate"]
 
 # add cards together
 combine = cards.merge(sets, on='setCode')
-combine = combine.drop(['setCode'], axis=1)
+#combine = combine.drop(['setCode'], axis=1)
 
 # drop lands
 boolean_land = combine["type"] == "Land"
@@ -33,13 +33,15 @@ card_names = combine['name'].drop_duplicates().tolist()
 # Apparently, this is a tiny bit faster than keeping everything in pandas
 releaseDates = []
 setNames = []
+setCodes = []
 
 for index in tqdm(range(len(card_names))):
     boolean_name_match = combine['name'] == card_names[index]
     # if name is unique, just add it to lists
     if boolean_name_match.sum() == 1:
-        releaseDates.append(name_match['releaseDate'].iloc[0])
-        setNames.append(name_match['setName'].iloc[0])
+        releaseDates.append(combine['releaseDate'].loc[boolean_name_match])
+        setNames.append(combine['setName'].loc[boolean_name_match])
+        setCodes.append(combine['setCode'].loc[boolean_name_match])
         continue
     
     # otherwise, iterate through dates and pick the smallest one
@@ -54,10 +56,12 @@ for index in tqdm(range(len(card_names))):
     
     releaseDates.append(lowest_date)
     setNames.append(name_match['setName'].iloc[j])
+    setCodes.append(name_match['setCode'].iloc[j])
 
 filtered_cards = pd.DataFrame({'name':card_names,
                                'setName':setNames,
-                               'releaseDates':releaseDates})
+                               'releaseDates':releaseDates,
+                               'setCodes':setCodes})
 
 print(filtered_cards.head(5))
 filtered_cards.to_csv(os.path.join(dir_path,"filtered_cards.csv"))
