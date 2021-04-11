@@ -19,7 +19,6 @@ i = 0
 
 # progress bar
 number_of_cards = count_number_of_lines(csv_path)
-progress = tqdm(desc=f"Checking files", total=number_of_cards)
 
 for index, row in tqdm(cards.iterrows()):
     price_info_filepath = local_url_maker(row.loc['setName'], row.loc['name'])
@@ -49,7 +48,7 @@ array_dates    = []
 array_openings = []
 
 print('Preparing Data')
-for file_name in list_of_files[:10]:
+for file_name in tqdm(list_of_files[:10]):
     index_row = 0
     array_dates_for_card  = []
     array_openings_for_card = []
