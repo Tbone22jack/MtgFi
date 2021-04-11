@@ -42,8 +42,10 @@ def count_number_of_lines(filename):
         try:
             next(file_gen)
             i += 1
-        except:
-            pass
+        except Exception as e:
+            print(e)
+            break
+    print(filename)
     return i
 
 

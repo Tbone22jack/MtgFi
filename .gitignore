@@ -42,6 +42,5 @@ test*
 MTGJSON/*
 !MTGJSON/README
 !MTGJSON/AllPrintingsCSVFiles/blank.txt
-MTGJSON/AllPrintingsCSVFiles/cards.csv
-MTGJSON/AllPrintingsCSVFiles/foreign_data.csv
 failed.txt
+__pycache__/*
