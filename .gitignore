@@ -45,3 +45,7 @@ MTGJSON/*
 failed.txt
 __pycache__/
 pickled*
+filtered_cards copy.csv
+list_of_words.txt
+mini.csv
+miniPickledDates
