@@ -40,7 +40,6 @@ for index, row in cards.iterrows():
         list_of_files.append(price_info_filepath)
         list_of_card_names.append(row.loc['name'])
         list_of_card_set_names.append(row.loc['setName'])
-    progress.update(1)
 
 
 array_dates    = []
