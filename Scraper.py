@@ -65,7 +65,6 @@ if __name__ == '__main__':
     for index, row in tqdm(cards.iterrows()):
 
         card_url = url_maker(row.loc['setName'], row.loc['name'])
-        #card_info_filepath = os.path.join(dir_path, "Card_Text", card_url.replace('/','_') + '.txt')
         price_info_filepath = local_url_maker(row.loc['setName'], row.loc['name'])
         if os.path.exists(price_info_filepath):
             progress.update(1)
@@ -98,14 +97,6 @@ if __name__ == '__main__':
         regularExpression = re.compile(r'\s\sd\s\+=\s\"\\n([^"]+)\"')
         lstDates = regularExpression.findall(str(html, 'UTF-8'))
         strDates = '\n'.join(lstDates)
-
-        # get text about card
-        # parsed_html = BeautifulSoup(html, 'html.parser')
-        # strOracle = str(parsed_html.body.find('div', attrs={'id':'oracle-text'}))
-        # # clean text
-        # strOracle = re.sub('<br\/\s*?>', ' ', strOracle)
-        # strOracle = re.sub(r'<(.|\n)*?>', "", strOracle).replace('\n', ' ')
-        # strOracle = re.sub(r' +', ' ', strOracle).strip()
 
         # write info in appropriate place
         with open(price_info_filepath, 'w') as file_handler:
