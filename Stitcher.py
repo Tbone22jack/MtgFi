@@ -24,7 +24,6 @@ for index, row in tqdm(cards.iterrows()):
     price_info_filepath = local_url_maker(row.loc['setName'], row.loc['name'])
     if os.path.exists(price_info_filepath):
         i += 1
-    progress.update(1)
 
 number_of_files = i
 print("Number of files that can be parsed: ", i)
