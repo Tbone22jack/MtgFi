@@ -43,5 +43,5 @@ MTGJSON/*
 !MTGJSON/README
 !MTGJSON/AllPrintingsCSVFiles/blank.txt
 failed.txt
-__pycache__/*
+__pycache__/
 pickled*
