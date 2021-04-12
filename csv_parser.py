@@ -26,4 +26,4 @@ new_combine = combine.sort_values(by=['releaseDate'], ascending=True)
 final_combine = new_combine.drop_duplicates(subset=['name'])
 
 print(combine.head(5))
-combine.to_csv(os.path.join(dir_path,"filtered_cards.csv"))
+final_combine.to_csv(os.path.join(dir_path,"filtered_cards.csv"))
