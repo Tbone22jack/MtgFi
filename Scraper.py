@@ -8,6 +8,7 @@ from random import randint
 from time import sleep
 from tqdm import tqdm
 import datetime
+from help import getfile
 
 #new-iteration started at 1:55am
 #started again around 2:37
@@ -33,7 +34,7 @@ def url_maker(set_name, card_name):
 
 def local_url_maker(set_name, card_name):
     card_url = url_maker(set_name, card_name)
-    return os.path.join(dir_path, "Price_Info", card_url.replace('/','_') + '.txt')
+    return getfile("Price_Info", card_url.replace('/','_') + '.txt')
 
 def count_number_of_lines(filename):
     file_gen = file_generator(filename)
@@ -50,7 +51,13 @@ def count_number_of_lines(filename):
 
 
 if __name__ == '__main__':
-    csv_path = os.path.join(dir_path, "filtered_cards.csv")
+    if os.path.exists(getfile('failed.csv')):
+        failed_urls = pd.read_csv(getfile('failed.csv'))
+        failed_urls = set(failed_urls)
+    else:
+        failed_urls = set()
+
+    csv_path = getfile("filtered_cards.csv")
     cards = pd.read_csv(csv_path)
 
     # open robots.txt
@@ -62,47 +69,59 @@ if __name__ == '__main__':
     number_of_cards = count_number_of_lines(csv_path)
     progress = tqdm(desc=f"Counting Cards", total=number_of_cards)
 
-    for index, row in tqdm(cards.iterrows()):
+    try:
+        for index, row in tqdm(cards.iterrows()):
 
-        card_url = url_maker(row.loc['setName'], row.loc['name'])
-        price_info_filepath = local_url_maker(row.loc['setName'], row.loc['name'])
-        if os.path.exists(price_info_filepath):
-            progress.update(1)
-            continue
-
-        if index <= 8325:
-            progress.update(1)
-            continue
-
-        print(card_url)
-
-
-        # wait for a random amount of time
-        sleep_time  = randint(3,5)
-        sleep(sleep_time)
-
-        
-        # get html from website
-        strUrl = 'https://www.mtggoldfish.com/price/' + card_url + '#paper'
-        webpage = requests.get(strUrl)
-        if webpage.status_code == 404:
-            with open(os.path.join(dir_path, 'failed.txt'),'a') as file_handler:
-                now = datetime.datetime.now()
-                file_handler.write(now.strftime('%m/%d/%Y, %H:%M:%S') + '  |  ' + card_url + '\n')
+            card_url = url_maker(row.loc['setName'], row.loc['name'])
+            price_info_filepath = local_url_maker(row.loc['setName'], row.loc['name'])
+            
+            # check if a previous attempt at this has already failed
+            if card_url in failed_urls:
                 progress.update(1)
                 continue
-        html = webpage.content
 
-        # get dates
-        regularExpression = re.compile(r'\s\sd\s\+=\s\"\\n([^"]+)\"')
-        lstDates = regularExpression.findall(str(html, 'UTF-8'))
-        strDates = '\n'.join(lstDates)
+            # check if already scraped
+            if os.path.exists(price_info_filepath):
+                progress.update(1)
+                continue
 
-        # write info in appropriate place
-        with open(price_info_filepath, 'w') as file_handler:
-            file_handler.write(strDates)
-        
-        progress.update(1)
+
+
+            print(card_url)
+
+
+            # wait for a random amount of time
+            sleep_time  = randint(3,5)
+            sleep(sleep_time)
+
+            
+            # get html from website
+            strUrl = 'https://www.mtggoldfish.com/price/' + card_url + '#paper'
+            webpage = requests.get(strUrl)
+            if webpage.status_code == 404:
+                failed_urls.add(card_url)
+                with open(getfile('failed.txt'),'a') as file_handler:
+                    now = datetime.datetime.now()
+                    file_handler.write(now.strftime('%m/%d/%Y, %H:%M:%S') + '  |  ' + card_url + '\n')
+                    progress.update(1)
+                    continue
+            html = webpage.content
+
+            # get dates
+            regularExpression = re.compile(r'\s\sd\s\+=\s\"\\n([^"]+)\"')
+            lstDates = regularExpression.findall(str(html, 'UTF-8'))
+            strDates = '\n'.join(lstDates)
+
+            # write info in appropriate place
+            with open(price_info_filepath, 'w') as file_handler:
+                file_handler.write(strDates)
+            
+            progress.update(1)
+
+    except Exception as e:
+        print(e)
+        print('Failed at card: ', row.loc['name'])
+        failed_urls.to_csv('failed.csv')
 
 
 
