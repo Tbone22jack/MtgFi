@@ -1,4 +1,10 @@
+'''
+has functions to help speed up the work
+
+'''
+
 import os
+import pickle as pl
 
 
 def getfile(*arg):
@@ -24,6 +30,26 @@ getfile("a","b","c.txt")
     return(os.sep.join(paths))
 
 
+def pickle(data, path):
+    '''
+pickle(data, 'path/to/pickled/file')
+
+
+    '''
+
+    with open(path, 'wb') as file_handler:
+        pl.dump(data,file_handler)
+
+
+def unpickle(path):
+    '''
+unpickle('path/to/pickled/file')
+
+    '''
+    with open(path, 'rb') as file_handler:
+        return pl.load(file_handler)
 
 if __name__ == '__main__':
-    print(getfile('path', 'to', 'file'))
+    #print(getfile('path', 'to', 'file'))
+    pickle(2,getfile('test','fine.txt'))
+    print(3*unpickle(getfile('test', 'fine.txt')))
