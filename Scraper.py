@@ -52,7 +52,7 @@ def count_number_of_lines(filename):
 
 if __name__ == '__main__':
     if os.path.exists(getfile('failed.csv')):
-        failed_urls = pd.read_csv(getfile('failed.csv'))
+        failed_urls = pd.read_csv(getfile('failed.csv'), header = None, index_col = 0, squeeze = True)
         failed_urls = set(failed_urls)
     else:
         failed_urls = set()
@@ -100,6 +100,8 @@ if __name__ == '__main__':
             webpage = requests.get(strUrl)
             if webpage.status_code == 404:
                 failed_urls.add(card_url)
+                if len(failed_urls) % 5 == 0:
+                    pd.Series(list(failed_urls)).to_csv('failed.csv')
                 with open(getfile('failed.txt'),'a') as file_handler:
                     now = datetime.datetime.now()
                     file_handler.write(now.strftime('%m/%d/%Y, %H:%M:%S') + '  |  ' + card_url + '\n')
@@ -121,8 +123,8 @@ if __name__ == '__main__':
     except Exception as e:
         print(e)
         print('Failed at card: ', row.loc['name'])
-        failed_urls.to_csv('failed.csv')
-
-
-
+        pd.Series(list(failed_urls)).to_csv('failed.csv')
+    
+    print('Downloading cards was successful')
+    pd.Series(list(failed_urls)).to_csv('failed.csv')
 
