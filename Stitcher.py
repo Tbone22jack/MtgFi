@@ -1,4 +1,9 @@
-# Combines price info with miscellaneous info from mtgjson
+'''
+
+Combines price info or miscellaneous info from mtgjson and pickles them
+
+
+'''
 
 
 from os import listdir, remove
@@ -169,8 +174,9 @@ def stitch_card_info():
 
 
 if __name__ == '__main__':
-    # stitch_dates()
+    stitch_dates()
     # stitch_card_info()
+    """
     print(get_card_info('flavorText', 'name', "Ancestor's Chosen"))
 
     csv_path = os.path.join(dir_path, "filtered_cards.csv")
@@ -187,7 +193,7 @@ if __name__ == '__main__':
         if os.path.exists(price_info_filepath):
             list_of_files.append(price_info_filepath)
             list_of_card_names.append(row.loc['name'])
-            list_of_card_setCodes.append(row.loc['setCodes'])
+            list_of_card_setCodes.append(row.loc['setCode'])
             i += 1
 
     number_of_files = i
@@ -221,3 +227,4 @@ if __name__ == '__main__':
     
     with open('list_of_words.txt','w') as file_handler:
         file_handler.write(' '.join(array_words))
+    """

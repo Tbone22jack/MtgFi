@@ -49,7 +49,6 @@ def count_number_of_lines(filename):
     print(filename)
     return i
 
-
 if __name__ == '__main__':
     if os.path.exists(getfile('failed.csv')):
         failed_urls = pd.read_csv(getfile('failed.csv'), header = None, index_col = 0, squeeze = True)
